@@ -8,7 +8,7 @@ Intended to run on a Raspberry Pi or similar device.
 
 # Status
 
-Very early stage. Fixed palette, 8 x 8 pixel grid.
+Very early stage. Fixed palette, 8x8 pixel grid.
 
 # Requirements
 
@@ -25,7 +25,7 @@ Very early stage. Fixed palette, 8 x 8 pixel grid.
 
 Use python3 venv:
 
-    git clone
+    git clone https://github.com/kbsant/ledpixelpi
     cd ledpixelpi
     python3 -m venv ledpixelpi-venv
     source ledpixelpi-venv/bin/activate
@@ -37,6 +37,7 @@ Debug mode
 
     python3 -m flask --debug run --host 0.0.0.0 --port 3000
 
+And point your browser at: http://localhost:3000
 If it doesnt work, try changing the port as there may be some conflict.
 
 # Limitations
