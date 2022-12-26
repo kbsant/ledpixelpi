@@ -48,8 +48,10 @@ If it doesnt work, try changing the port as there may be some conflict.
 * Save to json file
 * Load from json file
 * Live update to gpio
-* Frames and animation
+* Layers, Frames and animation
 * Audio
+* Save to svg 
+* Save to gif
 
 # Limitations
 
