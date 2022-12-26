@@ -40,6 +40,15 @@ Debug mode
 And point your browser at: http://localhost:3000
 If it doesnt work, try changing the port as there may be some conflict.
 
+
+# To-Do
+
+* Save to json file
+* Load from json file
+* Live update to gpio
+* Frames and animation
+* Audio
+
 # Limitations
 
 Very early stage. Use at your own risk.

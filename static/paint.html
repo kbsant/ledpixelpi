@@ -56,108 +56,53 @@
 	  [  0   0   0]
 	  [128 128 128]
 	  [255 255 255]
-	 ]
+	  ]
+         :pixels (into []
+                       (repeat 64 [0 0 0]))
 	 :clicks 0}))
 
+      (defn rect-rgb [width height r g b]
+        [:rect {:width width
+                :height height
+                :fill (str "rgb(" r","g ","b ")")
+                :stroke "rgb(192,192,192)"}]     )
+           
       (defn pal-color [{:keys [width height rgb]}]
        (let [[r g b] rgb]
 	[:svg {:width width :height height :on-click #(swap! state assoc :fg rgb)}
-	 [:rect {:width width :height height :fill (str "rgb(" r","g ","b ")") :stroke "rgb(192,192,192)"}]]))
+	 (rect-rgb width height r g b)]))
 
       (defn pal-swatch [rgb]
        (pal-color {:width 20 :height 20 :rgb rgb}))
-      
+
+      (defn pixel [{:keys [fg pixels]} i]
+        (let [w 20
+              h 20
+              [r g b] (get pixels i [0 0 0])]
+         [:svg {:width w :height h :on-click #(swap! state assoc-in [:pixels i] fg)}
+          (rect-rgb w h r g b)]     ))
+
+      (defn pixel-row [state-info r]
+        (into [:div.row]
+	      (for [c (range 8)]
+                [:div.col-1 (pixel state-info (+ (* 8 r) c))])))
+
       (defn my-component []
        (let [{:keys [fg palette]} @state]
 	[:div.container
 	 [:div.row
-	  
 	  [:div.col-1 (pal-color {:width 40 :height 40 :rgb fg})]
 	  [:div.col-6
 	   [:div.container
 	    [:div.row.justify-content-start
 	     (map-indexed (fn [i col] ^{:key i}[:div.col-1 (pal-swatch col)]) palette)
-	     
-	    ]]]
-	  
-	 ]
+	    ]]]]
 	 [:div.row
 	  [:div.col
-	   [:div.container
-	    [:div.row
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]]
-	    [:div.row
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]]
-	    [:div.row
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]]
-	    [:div.row
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]]
-	    [:div.row
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]]
-	    [:div.row
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]]
-	    [:div.row
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]]
-	    [:div.row
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]
-	     [:div.col-1 [:svg {:width 20 :height 20} [:rect {:width 20 :height 20}]]]]
-	   ]]]
-	 ]))
+           (let [state-info @state]
+             (into
+	      [:div.container]
+              (for [r (range 8)] (pixel-row state-info r))))]]]))
 
       (rdom/render [my-component] (.getElementById js/document "app"))
     </script>
