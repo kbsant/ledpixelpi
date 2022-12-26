@@ -43,6 +43,8 @@ If it doesnt work, try changing the port as there may be some conflict.
 
 # To-Do
 
+* Paint while dragging/moving
+* Background color/erase
 * Save to json file
 * Load from json file
 * Live update to gpio
