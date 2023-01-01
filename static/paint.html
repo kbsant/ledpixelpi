@@ -10,6 +10,7 @@
     <script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/scittle@0.5.13/dist/scittle.reagent.js" type="application/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/scittle@0.5.13/dist/scittle.cljs-ajax.js" type="application/javascript"></script>
     <script type="application/x-scittle">
       (require '[reagent.core :as r]
            '[reagent.dom :as rdom])
@@ -75,11 +76,14 @@
       (defn pal-swatch [rgb]
        (pal-color {:width 20 :height 20 :rgb rgb}))
 
+      (defn send-rgb [i [r g b]]
+        #_ (async-GET api-set-rgb i r g b))
+
       (defn pixel [{:keys [fg pixels]} i]
         (let [w 20
               h 20
               [r g b] (get pixels i [0 0 0])]
-         [:svg {:width w :height h :on-click #(swap! state assoc-in [:pixels i] fg)}
+         [:svg {:width w :height h :on-click #(do (swap! state assoc-in [:pixels i] fg) (send-rgb i fg))}
           (rect-rgb w h r g b)]     ))
 
       (defn pixel-row [state-info r]
@@ -88,7 +92,7 @@
                 [:div.col-1 (pixel state-info (+ (* 8 r) c))])))
 
       (defn my-component []
-       (let [{:keys [fg palette]} @state]
+       (let [{:keys [fg palette last]} @state]
 	[:div.container
 	 [:div.row
 	  [:div.col-1 (pal-color {:width 40 :height 40 :rgb fg})]
@@ -102,7 +106,10 @@
            (let [state-info @state]
              (into
 	      [:div.container]
-              (for [r (range 8)] (pixel-row state-info r))))]]]))
+              (for [r (range 8)] (pixel-row state-info r))))]]
+         [:div.row
+          [:div.col
+           [:p [:span (when last (str "Last update: " last))]]]]]))
 
       (rdom/render [my-component] (.getElementById js/document "app"))
     </script>
