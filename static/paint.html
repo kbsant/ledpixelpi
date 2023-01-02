@@ -13,7 +13,8 @@
     <script src="https://cdn.jsdelivr.net/npm/scittle@0.5.13/dist/scittle.cljs-ajax.js" type="application/javascript"></script>
     <script type="application/x-scittle">
       (require '[reagent.core :as r]
-           '[reagent.dom :as rdom])
+               '[reagent.dom :as rdom]
+               '[ajax.core :refer [GET POST]])
 
       (def state
        (r/atom
@@ -76,8 +77,10 @@
       (defn pal-swatch [rgb]
        (pal-color {:width 20 :height 20 :rgb rgb}))
 
+      ;;TODO validations and parameter encoding
       (defn send-rgb [i [r g b]]
-        #_ (async-GET api-set-rgb i r g b))
+        (GET (str "/px/" i "/" r "/" g "/" b)
+             {:handler #(swap! state assoc :last (str %))}))
 
       (defn pixel [{:keys [fg pixels]} i]
         (let [w 20
