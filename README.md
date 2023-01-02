@@ -41,8 +41,32 @@ And point your browser at: http://localhost:3000
 If it doesnt work, try changing the port as there may be some conflict.
 
 
+# Running with RPI 
+
+RPI would need dependencies. For example, setting up with WS2812 pixel board:
+
+    sudo pip3 install rpi_ws281x
+    sudo pip3 install adafruit-circuitpython-neopixel
+    sudo python3 -m pip install --force-reinstall adafruit-blinka
+	
+ Thanks to Adafruit (i'm not affiliated. just tried it and it works)
+
+To run with the RPI, add a hook to the `/px` method:
+
+    # requires root to work.
+	# this can be initialized only once per process
+    import board
+    import neopixel
+    pixels = neopixel.NeoPixel(board.D18, 64)
+
+    # trigger this in the /px method
+    pixels[int(index)] = (int(red)/4,int(green)/4,int(blue)/4)
+
+
+
 # To-Do
 
+* Support various layouts - for example, snake-like 8x8 layout wraps around continuously
 * Paint while dragging/moving
 * Background color/erase
 * Save to json file
