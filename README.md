@@ -5,6 +5,7 @@ This is a small web app for editing pixel patterns.
 
 Intended to run on a Raspberry Pi or similar device.
 
+![Led Pixel Pi](doc/ledpixelpi.jpg?raw=true)
 
 # Status
 
