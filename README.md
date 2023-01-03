@@ -53,24 +53,37 @@ RPI would need dependencies. For example, setting up with WS2812 pixel board:
 
 To run with the RPI, add a hook to the `/px` method:
 
+    # Connect the LED rgb lights before starting the app.
+    #
+    # RPi GPIO pinout
+    #
+    #   .  .  pin02 5V
+    #   .  .
+    #   .  .  pin06 GND
+    #   .  .
+    #   .  .
+    #   .  .  pin12 GPIO18
+    #   .  .
+    #   (etc)
+
+
     # requires root to work.
 	# this can be initialized only once per process
     import board
     import neopixel
-    pixels = neopixel.NeoPixel(board.D18, 64)
+    pixels = neopixel.NeoPixel(board.D18, size)
 
     # trigger this in the /px method
-    pixels[int(index)] = (int(red)/4,int(green)/4,int(blue)/4)
+    pixels[index] = (red//factor,green//factor,blue//factor)
 
 
 
 # To-Do
 
-* Support various layouts - for example, snake-like 8x8 layout wraps around continuously
-* Paint while dragging/moving
-* Background color/erase
 * Save to json file
 * Load from json file
+* Paint while dragging/moving
+* Background color/erase
 * Live update to gpio
 * Layers, Frames and animation
 * Audio
